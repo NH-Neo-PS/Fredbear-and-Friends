@@ -97,7 +97,6 @@
             overflow: hidden;
         }
 
-        /* Modal/Detail View */
         .devlog-detail {
             display: none;
             position: fixed;
@@ -244,7 +243,6 @@
             font-style: italic;
         }
 
-        /* Assets Section */
         .assets-section {
             margin-top: 40px;
             border-top: 1px solid #30363d;
@@ -299,7 +297,6 @@
             cursor: pointer;
         }
 
-        /* Image Lightbox */
         .image-lightbox {
             display: none;
             position: fixed;
@@ -409,7 +406,6 @@
         <div class="devlogs-grid" id="devlogs-grid"></div>
     </div>
 
-    <!-- Detail View Modal -->
     <div class="devlog-detail" id="devlog-detail">
         <div style="position: relative; width: 100%; height: 100%;">
             <button class="close-detail-btn" onclick="closeDevLogDetail()">Close</button>
@@ -420,7 +416,6 @@
         </div>
     </div>
 
-    <!-- Image Lightbox -->
     <div class="image-lightbox" id="image-lightbox">
         <div class="image-lightbox-content">
             <img class="image-lightbox-img" id="lightbox-image" src="" alt="">
@@ -434,7 +429,6 @@
 
         async function loadDevLogs() {
             try {
-                // Fetch releases from GitHub API
                 const owner = 'NH-Neo-PS';
                 const repo = 'Fredbear-and-Friends';
                 const apiUrl = `https://api.github.com/repos/${owner}/${repo}/releases`;
@@ -489,7 +483,6 @@
             currentIndex = index;
             const devlog = devlogs[index];
 
-            // Sidebar
             const sidebar = document.getElementById('detail-sidebar');
             sidebar.innerHTML = `
                 <div class="sidebar-section">
@@ -510,7 +503,6 @@
                 </div>
             `;
 
-            // Main Content
             const main = document.getElementById('detail-main');
             main.innerHTML = `
                 <div class="devlog-content">
@@ -519,17 +511,15 @@
                 </div>
             `;
 
-            // Add image lightbox handlers to main content images
             setTimeout(() => {
                 const contentImages = main.querySelectorAll('img:not(.asset-item img)');
                 contentImages.forEach(img => {
-                    img.addEventListener('click', (e) => {
+                    img.addEventListener('click', () => {
                         openLightbox(img.src);
                     });
                     img.style.cursor = 'pointer';
                 });
 
-                // Add asset click handlers
                 const assetItems = main.querySelectorAll('.asset-item img');
                 assetItems.forEach(img => {
                     img.addEventListener('click', (e) => {
@@ -554,9 +544,7 @@
         }
 
         function renderGitHubAssets(assets) {
-            if (!assets || assets.length === 0) {
-                return '';
-            }
+            if (!assets || assets.length === 0) return '';
 
             const imageExtensions = ['png', 'jpg', 'jpeg', 'gif', 'webp'];
             const images = assets.filter(asset => {
@@ -564,9 +552,7 @@
                 return imageExtensions.includes(ext);
             });
 
-            if (images.length === 0) {
-                return '';
-            }
+            if (images.length === 0) return '';
 
             let assetsHtml = '<div class="assets-section"><div class="assets-title">Assets</div><div class="assets-grid">';
 
@@ -583,7 +569,6 @@
         }
 
         function markdownToHtml(markdown) {
-            // Escape sequences
             const escapeMap = {};
             let escapeIndex = 0;
             
@@ -611,7 +596,6 @@
                 .replace(/\n\n/g, '</p><p>')
                 .replace(/\n/g, '<br>');
             
-            // Restore escaped characters
             Object.entries(escapeMap).forEach(([placeholder, char]) => {
                 html = html.split(placeholder).join(char);
             });
@@ -633,7 +617,6 @@
             currentIndex = -1;
         }
 
-        // Close on ESC
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 closeLightbox();
@@ -641,7 +624,6 @@
             }
         });
 
-        // Load on page load
         loadDevLogs();
     </script>
 </body>
